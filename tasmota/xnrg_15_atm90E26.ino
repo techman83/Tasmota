@@ -5,7 +5,7 @@
 #ifdef USE_ENERGY_SENSOR
 #ifdef USE_ATM90E26
 
-#define XNRG_14 14
+#define XNRG_15 15
 
 // Support both?
 //#include <energyic_UART.h>
@@ -183,7 +183,7 @@ void AtmDrvInit(void) {
     //SSPI_CS isn't a flag, if 0 then can assume that using secondary CS (and first is always GPIO15?
     //if Pin(GPIO_SSPI_CS) == 0 use_second_device = true?
     AddLog_P2(LOG_LEVEL_INFO, PSTR("ATM90E26 device init %d"), Pin(GPIO_SSPI_CS));
-    energy_flg = XNRG_14;
+    energy_flg = XNRG_15;
   }
 }
 
@@ -225,7 +225,7 @@ bool AtmCommand(void) {
   return true;
 }
 
-bool Xnrg14(uint8_t function) {
+bool Xnrg15(uint8_t function) {
   bool result = false;
   switch (function) {
   // If/when have totals for other channels
