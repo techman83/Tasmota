@@ -1129,6 +1129,9 @@ void SettingsDefaultSet2(void)
   JsonTemplate(USER_TEMPLATE);
 #endif
 
+  //ATM90E26
+  flag4.atm90e26_channel2 |= ATM90E26_CHANNEL2;
+
   Settings.flag = flag;
   Settings.flag2 = flag2;
   Settings.flag3 = flag3;

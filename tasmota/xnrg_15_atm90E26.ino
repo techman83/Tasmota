@@ -138,14 +138,16 @@ void AtmShow(bool json) {
     // All should be on the one sensor line
     // https://github.com/arendst/Tasmota/issues/339
     // With that, currently add ENERGYn, is there a best practic way that's better?
-    ResponseAppend_P(PSTR("},\"" D_JSON_ENERGY "%d\":{"),2);
-    ResponseAppend_P(PSTR("\"" D_JSON_POWERUSAGE "\":%s"), active_power_chr);
-    ResponseAppend_P(PSTR(",\"" D_JSON_APPARENT_POWERUSAGE "\":%s,\"" D_JSON_REACTIVE_POWERUSAGE "\":%s,\"" D_JSON_POWERFACTOR "\":%s"), apparent_power_chr, reactive_power_chr, power_factor_chr);
-    ResponseAppend_P(PSTR(",\"" D_JSON_FREQUENCY "\":%s"), frequency_chr);
-    ResponseAppend_P(PSTR(",\"" D_JSON_VOLTAGE "\":%s"), voltage_chr);
-    ResponseAppend_P(PSTR(",\"" D_JSON_CURRENT "\":%s"), current_chr);
-    ResponseAppend_P(PSTR(",\"" "SysStatus" "\":\"%x\""),eic2->GetSysStatus());
-    ResponseAppend_P(PSTR(",\"" "MeterStatus" "\":\"%x\""),eic2->GetMeterStatus());
+    if (Settings.flag4.atm90e26_channel2){
+      ResponseAppend_P(PSTR("},\"" D_JSON_ENERGY "%d\":{"),2);
+      ResponseAppend_P(PSTR("\"" D_JSON_POWERUSAGE "\":%s"), active_power_chr);
+      ResponseAppend_P(PSTR(",\"" D_JSON_APPARENT_POWERUSAGE "\":%s,\"" D_JSON_REACTIVE_POWERUSAGE "\":%s,\"" D_JSON_POWERFACTOR "\":%s"), apparent_power_chr, reactive_power_chr, power_factor_chr);
+      ResponseAppend_P(PSTR(",\"" D_JSON_FREQUENCY "\":%s"), frequency_chr);
+      ResponseAppend_P(PSTR(",\"" D_JSON_VOLTAGE "\":%s"), voltage_chr);
+      ResponseAppend_P(PSTR(",\"" D_JSON_CURRENT "\":%s"), current_chr);
+      ResponseAppend_P(PSTR(",\"" "SysStatus" "\":\"%x\""),eic2->GetSysStatus());
+      ResponseAppend_P(PSTR(",\"" "MeterStatus" "\":\"%x\""),eic2->GetMeterStatus());
+    }
  
     //need to add support to others, do they work with multiple of the same type coming from the one sensor?
     //#ifdef USE_DOMOTICZ
@@ -160,17 +162,19 @@ void AtmShow(bool json) {
     //What does EnergyFormatIndex do? GetTextIndexed? -> probably single string/row
     //we can probaly ignore EnergyFormat, really for multiple phases but might be good for 3ph support later
     //not used in JSON version so can see both usages
-    char value_chr[FLOATSZ *3];
-    char value2_chr[FLOATSZ *3];
-    char value3_chr[FLOATSZ *3];
-    WSContentSend_PD(HTTP_ENERGY_ATM90E26_HEADER);
-    WSContentSend_PD(HTTP_SNS_VOLTAGE, EnergyFormat(value_chr, voltage_chr, json, Energy.voltage_common));
-    WSContentSend_PD(HTTP_SNS_CURRENT, EnergyFormat(value_chr, current_chr, json));
-    WSContentSend_PD(HTTP_SNS_POWER, EnergyFormat(value_chr, active_power_chr, json));
-    WSContentSend_PD(HTTP_ENERGY_SNS1, EnergyFormat(value_chr, apparent_power_chr, json),
-                                       EnergyFormat(value2_chr, reactive_power_chr, json),
-                                       EnergyFormat(value3_chr, power_factor_chr, json));
-    WSContentSend_PD(HTTP_SNS_FREQUENCY, frequency_chr);
+    if (Settings.flag4.atm90e26_channel2){
+      char value_chr[FLOATSZ *3];
+      char value2_chr[FLOATSZ *3];
+      char value3_chr[FLOATSZ *3];
+      WSContentSend_PD(HTTP_ENERGY_ATM90E26_HEADER);
+      WSContentSend_PD(HTTP_SNS_VOLTAGE, EnergyFormat(value_chr, voltage_chr, json, Energy.voltage_common));
+      WSContentSend_PD(HTTP_SNS_CURRENT, EnergyFormat(value_chr, current_chr, json));
+      WSContentSend_PD(HTTP_SNS_POWER, EnergyFormat(value_chr, active_power_chr, json));
+      WSContentSend_PD(HTTP_ENERGY_SNS1, EnergyFormat(value_chr, apparent_power_chr, json),
+                                         EnergyFormat(value2_chr, reactive_power_chr, json),
+                                         EnergyFormat(value3_chr, power_factor_chr, json));
+      WSContentSend_PD(HTTP_SNS_FREQUENCY, frequency_chr);
+    }
 #endif // USE_WEBSERVER
   }
 }
