@@ -53,14 +53,10 @@ void AtmSnsInit(void) {
   eic1->SetLGain(lgain);
   eic1->SetUGain(eic1_ugain);
   eic1->SetIGain(eic1_igain);
-  eic1->SetCRC1(eic1->CalcCheckSum(1));
-  eic1->SetCRC2(eic1->CalcCheckSum(2));
   eic1->InitEnergyIC();
   eic2->SetLGain(lgain);
   eic2->SetUGain(eic2_ugain);
   eic2->SetIGain(eic2_igain);
-  eic2->SetCRC1(eic2->CalcCheckSum(1));
-  eic2->SetCRC2(eic2->CalcCheckSum(2));
   eic2->InitEnergyIC();
 
   AddLog_P2(LOG_LEVEL_INFO,
