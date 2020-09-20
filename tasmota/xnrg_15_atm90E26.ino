@@ -36,15 +36,11 @@ struct ATM90E26 {
 void AtmSnsInit(void) {
 
   // Calibration
+  uint32_t lgain = 0x240b;
   uint32_t eic1_ugain = 0x6810;
   uint32_t eic1_igain = 0x7644;
-  uint32_t eic1_CRC1 = 0x410D;
-  uint32_t eic1_CRC2 = 0x0FD7;
-
   uint32_t eic2_ugain = 0x6720;
   uint32_t eic2_igain = 0x7644;
-  uint32_t eic2_CRC1 = 0x410D;
-  uint32_t eic2_CRC2 = 0x30E6;
 
   // Initialise the ATM90E26 + SPI port
   // Should we test status for success... probably....
@@ -54,21 +50,17 @@ void AtmSnsInit(void) {
   eic1 = new ATM90E26_SPI(15);
   eic2 = new ATM90E26_SPI(0);
 
-  eic1->SetLGain(0x240b);
+  eic1->SetLGain(lgain);
   eic1->SetUGain(eic1_ugain);
   eic1->SetIGain(eic1_igain);
-  eic1->SetCRC1(eic1_CRC1);
-  eic1->SetCRC2(eic1_CRC2);
-  eic2->SetLGain(0x240b);
+  eic1->SetCRC1(eic1->CalcCheckSum(1));
+  eic1->SetCRC2(eic1->CalcCheckSum(2));
+  eic1->InitEnergyIC();
+  eic2->SetLGain(lgain);
   eic2->SetUGain(eic2_ugain);
   eic2->SetIGain(eic2_igain);
-  eic2->SetCRC1(eic2_CRC1);
-  eic2->SetCRC2(eic2_CRC2);
-  eic1->InitEnergyIC();
-  // ESP8266 SPI starting bug, not needed anymore?
-  // delay(100);
-  // eic1->InitEnergyIC();
-  delay(10);
+  eic2->SetCRC1(eic2->CalcCheckSum(1));
+  eic2->SetCRC2(eic2->CalcCheckSum(2));
   eic2->InitEnergyIC();
 
   AddLog_P2(LOG_LEVEL_INFO,
