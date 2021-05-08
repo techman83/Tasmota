@@ -78,29 +78,29 @@ uint8_t Bh1750Resolution(uint32_t sensor_index) {
 }
 
 bool Bh1750SetResolution(uint32_t sensor_index) {
-  Wire.beginTransmission(Bh1750_sensors[sensor_index].address);
-  Wire.write(Bh1750.resolution[Bh1750Resolution(sensor_index)]);
-  return (!Wire.endTransmission());
+  Wire1.beginTransmission(Bh1750_sensors[sensor_index].address);
+  Wire1.write(Bh1750.resolution[Bh1750Resolution(sensor_index)]);
+  return (!Wire1.endTransmission());
 }
 
 bool Bh1750SetMTreg(uint32_t sensor_index) {
-  Wire.beginTransmission(Bh1750_sensors[sensor_index].address);
+  Wire1.beginTransmission(Bh1750_sensors[sensor_index].address);
   uint8_t data = BH1750_MEASUREMENT_TIME_HIGH | ((Bh1750_sensors[sensor_index].mtreg >> 5) & 0x07);
-  Wire.write(data);
-  if (Wire.endTransmission()) { return false; }
-  Wire.beginTransmission(Bh1750_sensors[sensor_index].address);
+  Wire1.write(data);
+  if (Wire1.endTransmission()) { return false; }
+  Wire1.beginTransmission(Bh1750_sensors[sensor_index].address);
   data = BH1750_MEASUREMENT_TIME_LOW | (Bh1750_sensors[sensor_index].mtreg & 0x1F);
-  Wire.write(data);
-  if (Wire.endTransmission()) { return false; }
+  Wire1.write(data);
+  if (Wire1.endTransmission()) { return false; }
   return Bh1750SetResolution(sensor_index);
 }
 
 bool Bh1750Read(uint32_t sensor_index) {
   if (Bh1750_sensors[sensor_index].valid) { Bh1750_sensors[sensor_index].valid--; }
 
-  if (2 != Wire.requestFrom(Bh1750_sensors[sensor_index].address, (uint8_t)2)) { return false; }
+  if (2 != Wire1.requestFrom(Bh1750_sensors[sensor_index].address, (uint8_t)2)) { return false; }
 
-  float illuminance = (Wire.read() << 8) | Wire.read();
+  float illuminance = (Wire1.read() << 8) | Wire1.read();
   illuminance /= (1.2 * (69 / (float)Bh1750_sensors[sensor_index].mtreg));
   if (1 == Bh1750Resolution(sensor_index)) {
     illuminance /= 2;
