@@ -232,6 +232,7 @@ enum UserSelectablePins {
   GPIO_C8_CO2_5K_TX, GPIO_C8_CO2_5K_RX, // C8-CO2-5K CO2 Sensor
   GPIO_V9240_TX, GPIO_V9240_RX,         //  V9240 serial interface
   GPIO_LD2402_TX, GPIO_LD2402_RX,       // HLK-LD2402
+  GPIO_LD2450_TX, GPIO_LD2450_RX,      // HLK-LD2450
   GPIO_SENSOR_END };
 
 // Error as warning to rethink GPIO usage with max 2045
@@ -511,6 +512,7 @@ const char kSensorNames[] PROGMEM =
   D_SENSOR_C8_CO2_5K_TX "|" D_SENSOR_C8_CO2_5K_RX "|"
   D_SENSOR_V9240_TX "|" D_SENSOR_V9240_RX "|"
   D_SENSOR_LD2402_TX "|" D_SENSOR_LD2402_RX
+  D_SENSOR_LD2450_TX "|" D_SENSOR_LD2450_RX "|"
   ;
 
 const char kSensorNamesFixed[] PROGMEM =
@@ -1170,6 +1172,12 @@ const uint16_t kGpioNiceList[] PROGMEM = {
   AGPIO(GPIO_TWAI_CLK) + AGMAX(MAX_TWAI),
 #endif
 #endif
+#ifdef USE_LD2450                       // xsns_124_ld2450.ino
+  AGPIO(GPIO_LD2450_TX),                // HLK-LD2450 Serial interface
+  AGPIO(GPIO_LD2450_RX),                // HLK-LD2450 Serial interface
+#endif
+#ifdef USE_LOX_O2                       // xsns_105_lox_o2.ino
+  AGPIO(GPIO_LOX_O2_RX),                // LuminOx Oxygen Sensor LOX-O2 Serial interface
 #endif
 
 /*-------------------------------------------------------------------------------------------*\
@@ -2973,11 +2981,11 @@ const mytmplt kModules[] PROGMEM = {
     AGPIO(GPIO_USER),            // 0       IO                  GPIO0, ADC1_CH0,  RTC
     AGPIO(GPIO_USER),            // 1       IO                  GPIO1, ADC1_CH1,  RTC
     AGPIO(GPIO_USER),            // 2       IO                  GPIO2, ADC1_CH2,  RTC
-    AGPIO(GPIO_USER),            // 3       IO                  GPIO3, ADC1_CH3,  RTC 
-    AGPIO(GPIO_USER),            // 4       IO                  GPIO4, ADC1_CH4,  RTC 
-    AGPIO(GPIO_USER),            // 5       IO                  GPIO5, RTC 
+    AGPIO(GPIO_USER),            // 3       IO                  GPIO3, ADC1_CH3,  RTC
+    AGPIO(GPIO_USER),            // 4       IO                  GPIO4, ADC1_CH4,  RTC
+    AGPIO(GPIO_USER),            // 5       IO                  GPIO5, RTC
     AGPIO(GPIO_USER),            // 6       IO                  GPIO6,
-    AGPIO(GPIO_USER),            // 7       IO                  GPIO7, 
+    AGPIO(GPIO_USER),            // 7       IO                  GPIO7,
     AGPIO(GPIO_USER),            // 8       IO                  GPIO8, Strapping
     AGPIO(GPIO_USER),            // 9       IO                  GPIO9, Strapping
     AGPIO(GPIO_USER),            // 10      IO                  GPIO10
@@ -3082,7 +3090,7 @@ const mytmplt kModules[] PROGMEM = {
     AGPIO(GPIO_USER),            // 0       IO                  GPIO0, ADC1_CH0, LP_GPIO0
     AGPIO(GPIO_USER),            // 1       IO                  GPIO1, ADC1_CH1, LP_GPIO1
     AGPIO(GPIO_USER),            // 2       IO                  GPIO2, ADC1_CH2, LP_GPIO2
-    AGPIO(GPIO_USER),            // 3       IO                  GPIO3, ADC1_CH3, LP_GPIO3 
+    AGPIO(GPIO_USER),            // 3       IO                  GPIO3, ADC1_CH3, LP_GPIO3
     AGPIO(GPIO_USER),            // 4       IO                  GPIO4, ADC1_CH4, LP_GPIO4, Strapping
     AGPIO(GPIO_USER),            // 5       IO                  GPIO5, ADC1_CH5, LP_GPIO5, Strapping
     AGPIO(GPIO_USER),            // 6       IO                  GPIO6, ADC1_CH6, LP_GPIO6

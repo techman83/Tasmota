@@ -233,7 +233,7 @@
 #define D_ANALOG_INPUT "Analogique"
 
 // support.ino
-#define D_OSWATCH "osWatch"          // Indicateurs 
+#define D_OSWATCH "osWatch"          // Indicateurs
 #define D_BLOCKED_LOOP "Boucle bloquée"
 #define D_WPS_FAILED_WITH_STATUS "WPSconfig ÉCHOUÉ avec status"
 #define D_ACTIVE_FOR_3_MINUTES "actif pour 3 minutes"
@@ -540,7 +540,7 @@
 
 // xsns_100_ina3221.ino
 #define  D_UNIT_CHARGE                    "Ah"
-#define  D_CHARGE                         "Charge"    
+#define  D_CHARGE                         "Charge"
 #define  D_ENERGY                         "Energy"
 
 // xdrv_27_shutter.ino
@@ -784,6 +784,8 @@
 #define D_SENSOR_LD2410_RX     "LD2410 Rx"
 #define D_SENSOR_LD2410S_TX     "LD2410S Tx"
 #define D_SENSOR_LD2410S_RX     "LD2410S Rx"
+#define D_SENSOR_LD2450_TX     "LD2450 Tx"
+#define D_SENSOR_LD2450_RX     "LD2450 Rx"
 #define D_GPIO_TM1621_CS       "TM1621 CS"
 #define D_GPIO_TM1621_WR       "TM1621 Wr"
 #define D_GPIO_TM1621_RD       "TM1621 Rd"

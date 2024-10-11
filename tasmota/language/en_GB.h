@@ -537,10 +537,10 @@
 #define D_ENERGY_TODAY "Energy Today"
 #define D_ENERGY_YESTERDAY "Energy Yesterday"
 #define D_ENERGY_TOTAL "Energy Total"
-  
+
 // xsns_100_ina3221.ino
 #define  D_UNIT_CHARGE                    "Ah"
-#define  D_CHARGE                         "Charge"    
+#define  D_CHARGE                         "Charge"
 #define  D_ENERGY                         "Energy"
 
 // xdrv_27_shutter.ino
@@ -784,6 +784,8 @@
 #define D_SENSOR_LD2410_RX     "LD2410 Rx"
 #define D_SENSOR_LD2410S_TX    "LD2410S Tx"
 #define D_SENSOR_LD2410S_RX    "LD2410S Rx"
+#define D_SENSOR_LD2450_TX     "LD2450 Tx"
+#define D_SENSOR_LD2450_RX     "LD2450 Rx"
 #define D_GPIO_TM1621_CS       "TM1621 CS"
 #define D_GPIO_TM1621_WR       "TM1621 WR"
 #define D_GPIO_TM1621_RD       "TM1621 RD"
