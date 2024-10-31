@@ -784,6 +784,8 @@
 #define D_SENSOR_LD2410_RX              "LD2410 - RX"
 #define D_SENSOR_LD2410S_TX             "LD2410S - TX"
 #define D_SENSOR_LD2410S_RX             "LD2410S - RX"
+#define D_SENSOR_LD2450_TX              "LD2450 - TX"
+#define D_SENSOR_LD2450_RX              "LD2450 - RX"
 #define D_GPIO_TM1621_CS                "TM1621 - CS"
 #define D_GPIO_TM1621_WR                "TM1621 - WR"
 #define D_GPIO_TM1621_RD                "TM1621 - RD"
