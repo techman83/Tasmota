@@ -1179,6 +1179,7 @@ const uint16_t kGpioNiceList[] PROGMEM = {
 #ifdef USE_LOX_O2                       // xsns_105_lox_o2.ino
   AGPIO(GPIO_LOX_O2_RX),                // LuminOx Oxygen Sensor LOX-O2 Serial interface
 #endif
+#endif
 
 /*-------------------------------------------------------------------------------------------*\
  * Other sensors
