@@ -947,7 +947,7 @@ constexpr uint32_t feature[] = {
   0x00004000 |  // xnrg_25_v9240.ino
 #endif
 #ifdef USE_LD2450
-    feature9 |= 0x20000000;  // xsns_114_ld2450.ino
+  0x20000000 | // xsns_114_ld2450.ino
 #endif
 //  0x00008000 |  //
 //  0x00010000 |  //
