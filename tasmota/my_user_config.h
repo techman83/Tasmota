@@ -54,6 +54,7 @@
 #ifdef ESP8266
 #define FALLBACK_MODULE        SONOFF_BASIC      // [Module2] Select default module on fast reboot where USER_MODULE is user template
 //#define USER_TEMPLATE "{\"NAME\":\"Generic\",\"GPIO\":[1,1,1,1,1,1,1,1,1,1,1,1,1,1],\"FLAG\":0,\"BASE\":18}"  // [Template] Set JSON template
+//#define MODULE USER_MODULE                       // Set template enabled by default
 #endif  // ESP8266
 #ifdef ESP32
 #define FALLBACK_MODULE        WEMOS             // [Module2] Select default module on fast reboot where USER_MODULE is user template
@@ -644,7 +645,6 @@
 #define I2CDRIVERS_128_159     0xFFFFFFFF        // Enable I2CDriver128 to I2CDriver159
 
 #ifdef USE_I2C
-//  #define USE_I2C_BUS2                           // Add experimental support for second I2C bus on ESP8266 (+0k6k code)
 //  #define USE_SHT                                // [I2cDriver8] Enable SHT1X sensor (+1k4 code)
 //  #define USE_HTU                                // [I2cDriver9] Enable HTU21/SI7013/SI7020/SI7021 sensor (I2C address 0x40) (+1k5 code)
 //  #define USE_BMP                                // [I2cDriver10] Enable BMP085/BMP180/BMP280/BME280 sensors (I2C addresses 0x76 and 0x77) (+4k4 code)
@@ -663,8 +663,9 @@
     #define MGS_SENSOR_ADDR    0x04              // Default Mutichannel Gas sensor i2c address
 //  #define USE_SCD30                              // [I2cDriver29] Enable Sensiron SCd30 CO2 sensor (I2C address 0x61) (+3k3 code)
 //  #define USE_SCD40                              // [I2cDriver62] Enable Sensiron SCd40/Scd41 CO2 sensor (I2C address 0x62) (+3k5 code)
+//  #define USE_STCC4                              // [I2cDriver99] Enable Sensiron STCC4 CO2 sensor (I2C address 0x64 or 0x65) (+3k8 code)
 //  #define USE_SEN5X                              // [I2cDriver76] Enable Sensiron SEN5X sensor (I2C address 0x69) (+3k code)
-//  #define USE_SEN6X                              // [I2cDriver97] Enable Sensiron SEN6X sensor (I2C address 0x6B) (+7k8 code)
+//  #define USE_SEN6X                              // [I2cDriver97] Enable Sensiron SEN6X sensor (I2C address 0x6B) (+8k8 code)
 //  #define USE_SHT3X                              // [I2cDriver15] Enable Sensiron SHT3x (I2C address 0x44 or 0x45) or SHTC3 (I2C address 0x70) sensor (+0k7 code)
 //  #define USE_SGP30                              // [I2cDriver18] Enable Sensiron SGP30 sensor (I2C address 0x58) (+1k1 code)
 //  #define USE_SGP40                              // [I2cDriver69] Enable Sensiron SGP40 sensor (I2C address 0x59) (+1k4 code)
@@ -1259,15 +1260,8 @@
                                                  // Note that only two ciphers are enabled: ECDHE_RSA_WITH_AES_128_GCM_SHA256, ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
     #define USE_BERRY_WEBCLIENT_USERAGENT  "TasmotaClient" // default user-agent used, can be changed with `wc.set_useragent()`
     #define USE_BERRY_WEBCLIENT_TIMEOUT  2000    // Default timeout in milliseconds
-    // #define USE_BERRY_LEDS_PANEL                 // Add button to dynamically load the Leds Panel from a bec file online
-    #define USE_BERRY_LEDS_PANEL_URL             "http://ota.tasmota.com/tapp/leds_panel.bec"
-    // #define USE_BERRY_LVGL_PANEL                 // Add button to dynamically load the LVGL Panel from a bec file online
-    #define USE_BERRY_LVGL_PANEL_URL             "http://ota.tasmota.com/tapp/lvgl_panel.bec"
-    //#define USE_BERRY_PARTITION_WIZARD           // Add a button to dynamically load the Partion Wizard from a bec file online (+1.3KB Flash)
-    #define USE_BERRY_PARTITION_WIZARD_URL      "http://ota.tasmota.com/tapp/partition_wizard.bec"
-    //#define USE_BERRY_GPIOVIEWER                 // Add a button to dynamocally load the GPIO Viewer from a bec file online
-    #define USE_BERRY_GPIOVIEWER_URL            "http://ota.tasmota.com/tapp/gpioviewer.bec"
   #define USE_BERRY_TCPSERVER                    // Enable TCP socket server (+0.6k)
+  // #define USE_BERRY_MQTTCLIENT                  // Enable standalone, independent Berry MQTT client (+5.1k)
   // #define USE_BERRY_ULP                          // Enable ULP (Ultra Low Power) support (+4.9k)
   // Berry crypto extensions below:
   #define USE_BERRY_CRYPTO_AES_GCM               // enable AES GCM 256 bits
@@ -1296,6 +1290,7 @@
   // Main widgets as defined in LVGL8
     #define BE_LV_WIDGET_OBJ
     #define BE_LV_WIDGET_ARC
+    #define BE_LV_WIDGET_ARCLABEL   // LVGL 9.5.0
     #define BE_LV_WIDGET_BAR
     #define BE_LV_WIDGET_BTN        // LVGL 8
     #define BE_LV_WIDGET_BUTTON     // LVGL 9
@@ -1346,6 +1341,7 @@
 // -- Matter protocol ---------------------------------
   // #define USE_MATTER_DEVICE                      // Enable Matter device support (+380KB)
                                                     // Enabled by default in standard ESP32 binary
+  // #define USE_MATTER_VERBOSE                     // Enable verbose mode in logs (+16KB), automatically enabled with USE_BERRY_DEBUG
 
 #endif  // ESP32
 

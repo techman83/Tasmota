@@ -3,7 +3,89 @@ All notable changes to this project will be documented in this file.
 
 ## [Released]
 
-## [15.3.0]
+## [15.4.0] 20260422
+- Release Sybil
+
+## [15.3.0.4] 20260422
+### Added
+- Berry solidification is now part of the build system (#24664)
+
+### Changed
+- ESP8266 platform update from 2026.03.00 to 2026.04.00 (#24635)
+- ESP32 Platform from 2025.03.30 to 2026.04.30, Framework (Arduino Core) from v3.1.10 to v3.1.11 and IDF from v5.3.4.251226 to v5.3.4.260127 (#24635)
+- ESP32-C5/C6/P4 Platform from 2025.03.50 to 2026.04.50, Framework (Arduino Core) from v3.3.7 to v3.3.8 and IDF from v5.5.3+ to v5.5.4.260407 (#24635)
+- Berry faster compilation (#24656)
+
+### Fixed
+- Mitsubishi Electric HVAC memory leak and other issues for MiElHVAC (#24660)
+- I2S mkv muxing for files (#24666)
+
+## [15.3.0.3] 20260412
+### Added
+- Environment sensor SCD30 second I2C bus support
+- Drivers PCA9685 and PCF8574 multi I2C bus support
+- Shelly Pro EM-50 template {"NAME":"Shelly Pro EM-50","ARCH":"ESP32","GPIO":[0,0,224,0,3457,0,0,0,0,608,544,640,9472,0,5600,0,0,0,0,5568,0,0,0,0,0,0,0,0,5536,0,0,32,4736,0,0,0],"FLAG":0,"BASE":1,"CMND":"AdcGpio36 10000,10000,3350"} (#24604)
+
+### Changed
+- ESP8266 platform update from 2026.02.00 to 2026.03.00 (#24547)
+- ESP8266 use wrapped symbols for sntp_init and sntp_stop (#24566)
+- ESP32 Platform from 2025.02.30 to 2026.03.30, Framework (Arduino Core) from v3.1.9 to v3.1.10 and IDF from v5.3.4.251226 to v5.3.4.260127 (#24547)
+- Matter don't advertize IPv6 global address, only link-local (#24563)
+- ESP32-C5/C6/P4 Platform from 2025.03.30 to 2026.03.50, Framework (Arduino Core) from v3.1.10 to v3.3.7 and IDF from v5.3.4.260127 to v5.5.3+ (#24567)
+- NeoPool always output valid sensitive data (#24573)
+- SML suppress MQTT publish until valid meter data received (#24587)
+
+### Fixed
+- Athom esp32 2-3-4 gang change led behaviour after firmware update (#24509)
+- ESP8266 heap drain and exception 29 when DHCP provides NTP server (#24515, #24566)
+- NeoPool possible IntegerDivideByZero (#24578)
+- Shelly Dimmer 2 serial timeout regression from v15.2.0.1 (#24560)
+- Berry crash when comparing for equality float literals on ESP32 (#24610)
+
+## [15.3.0.2] 20260315
+### Added
+- ESP8266 redesigned I2C Wire driver to support second I2C bus
+- Environment sensors CCS811, SGP30 and SGP40 second I2C bus support
+- Real Time Clocks BM8563, PCF85063 and PCF85363 second I2C bus support
+- LCD second I2C bus support
+- Berry add `loglevel` to `mqtt.publish()` (#24551)
+
+### Changed
+- Adafruit_BusIO library from v1.11.0 to v1.17.4
+- Adafruit_CCS811 library from v1.0.0.14 to v1.1.3
+- Adafruit SGP30 library from v1.2.0 to v2.0.3
+- Adafruit SGP40 library from v1.1.0 to v1.1.4
+
+### Fixed
+- Crash when shutting down Wifi with `Wifi 0` (#24536)
+
+### Removed
+- Berry remove `mdns.stop()` (#24549)
+
+## [15.3.0.1] 20260308
+### Added
+- Support for Sensirion SCD43 CO2 sensor
+- I2S full duplex, auto rx sample rate (#24469)
+- Support for Sensirion STCC4 CO2 sensor
+- Support for JSON value pair `"ARCH"` in template being either ESP8266, ESP32, ESP32C2, ESP32C3, ESP32C5, ESP32C6, ESP32H2, ESP32H4, ESP32P4, ESP32S2 or ESP32S3
+
+### Changed
+- LVGL library from v9.4.0 to v9.5.0 (#24470)
+- Matter improved parameters handling (#24471)
+- Sensirion Core library from v0.6.0 to v0.7.2
+- Sen5x power on delay of 60ms (#24452)
+- SHT1x software reset I2C bus after initial (un)detection
+
+### Fixed
+- Do not free BT memory when in use (#24480)
+- Berry avoid `tasmota.wifi()` returning bad values when wifi is turned off (#24505)
+- Don't send extraneous `0\r\n\r\n` with non-chunked HTTP/1.0 (#24518)
+- File upload improvements: `/ufsu` api mode, no interrupts disabling, cleaner confirmation page (#24521)
+
+### Removed
+- Berry `tasmota.urlbecload()` superseded by Extension Manager (#24493)
+
+## [15.3.0] 20260219
 - Release Susan
 
 ## [15.2.0.6] 20260219
@@ -87,7 +169,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Berry `animate` to be replaced with `animation` framework (#24241)
 
-## [15.2.0]
+## [15.2.0] 20251212
 - Release Stephan
 
 ## [15.1.0.3] 20251212
@@ -98,7 +180,6 @@ All notable changes to this project will be documented in this file.
 - Berry `tasmota.micros()` to get time in microseconds (#24192)
 - Support for AGS02MA TVOC sensor (#24109)
 
-## [15.0.1.5] 20251011
 ### Changed
 - ESP32 Platform from 2025.11.30 to 2025.11.31, Framework (Arduino Core) from v3.1.5 to v3.1.6 and IDF from v5.3.4.251110 to v5.3.4.251110 (#24146)
 - Refactored DALI using TasmotaDali library v1.0.0 adding frame receive buffer

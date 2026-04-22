@@ -81,7 +81,7 @@ const uint8_t MAX_KNX_CB = 10;              // Max number of KNX Group Addresses
 const uint8_t MAX_XNRG_DRIVERS = 32;        // Max number of allowed energy drivers
 const uint8_t MAX_XDRV_DRIVERS = 128;       // Max number of allowed driver drivers
 const uint8_t MAX_XSNS_DRIVERS = 128;       // Max number of allowed sensor drivers
-const uint8_t MAX_I2C_DRIVERS = 96;         // Max number of allowed i2c drivers
+const uint8_t MAX_I2C_DRIVERS = 160;        // Max number of allowed i2c drivers
 const uint8_t MAX_SHUTTERS = 4;             // Max number of shutters
 const uint8_t MAX_SHUTTER_KEYS = 4;         // Max number of shutter keys or buttons
 const uint8_t MAX_PCF8574 = 4;              // Max number of PCF8574 devices
@@ -386,6 +386,17 @@ enum EmulationOptions {EMUL_NONE, EMUL_WEMO, EMUL_HUE, EMUL_MAX};
 
 enum TopicOptions { CMND, STAT, TELE, nu1, RESULT_OR_CMND, RESULT_OR_STAT, RESULT_OR_TELE };
 
+// Upload type used by HandleUploadLoop() to route incoming data.
+// Value 0 is invalid/unset. Each upload endpoint must set the appropriate
+// type before HandleUploadLoop() processes the first data block.
+// UPL_TASMOTA        - OTA firmware update (/u2)
+// UPL_SETTINGS       - Settings backup restore (/u2)
+// UPL_EFM8BB1        - Sonoff RF bridge EFM8BB1 firmware
+// UPL_TASMOTACLIENT  - Tasmota client (Arduino) hex file
+// UPL_EFR32          - Zigbee EZSP (EFR32) firmware
+// UPL_SHD            - Shelly dimmer firmware
+// UPL_CCL            - CC2530 Zigbee firmware via CCLoader
+// UPL_UFSFILE        - Filesystem file upload (/ufsu)
 enum UploadTypes { UPL_TASMOTA = 1, UPL_SETTINGS, UPL_EFM8BB1, UPL_TASMOTACLIENT, UPL_EFR32, UPL_SHD, UPL_CCL, UPL_UFSFILE };
 
 enum ExecuteCommandPowerOptions { POWER_OFF, POWER_ON, POWER_TOGGLE, POWER_BLINK, POWER_BLINK_STOP, POWER_OFF_FORCE,
