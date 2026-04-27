@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Berry add support for pre-processor (#24679)
 - Berry transpose C defines to Berry in `tasmota_defines_for_berry.be` (#24680)
+- MiElHVAC extend support of AirDirection control (#24675)
 
 ### Breaking Changed
 
