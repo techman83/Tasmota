@@ -106,18 +106,26 @@ float ESP_getFreeHeap1024(void) {
 }
 */
 
+#ifndef USE_ESP8266_DEBUG_HEAP
+
+uint32_t ESP_getMaxAllocHeap(void) {
+  return ESP.getFreeHeap();
+}
+
+#else 
+
 // umm_max_block_size() requires a heap walk (ICACHE_FLASH_ATTR, IRQs disabled).
 // Cache the result; refresh once per second via ESP_UpdateHeapMetrics().
 // umm_max_block_size() and umm_free_heap_size_lw() are available unconditionally
 // (UMM_INFO and UMM_STATS are hardcoded active in umm_malloc_cfg.h).
 static uint32_t s_umm_max_free_block = 0;
 
-void ESP_UpdateHeapMetrics(void) {
-  s_umm_max_free_block = umm_max_block_size();
-}
-
 uint32_t ESP_getMaxAllocHeap(void) {
   return s_umm_max_free_block ? s_umm_max_free_block : ESP.getFreeHeap();
+}
+
+void ESP_UpdateHeapMetrics(void) {
+  s_umm_max_free_block = umm_max_block_size();  // ESP.getMaxFreeBlockSize();
 }
 
 int32_t ESP_getHeapFragmentation(void) {
@@ -128,7 +136,10 @@ int32_t ESP_getHeapFragmentation(void) {
   return (frag < 0) ? 0 : frag;
 }
 
-void ESP_HeapOomCheck(void) {
+void ESP_HeapUsageUpdate(void) {
+  if (Settings->flag5.show_heap_with_timestamp) {
+    ESP_UpdateHeapMetrics();
+  }
 #if defined(UMM_INLINE_METRICS) || defined(UMM_STATS_FULL)
   static size_t oom_prev = 0;
   size_t oom = UMM_OOM_COUNT;
@@ -139,11 +150,32 @@ void ESP_HeapOomCheck(void) {
 #endif
 }
 
-void ESP_HeapOomTest(void) {
+void ResponseAppendHeapInfo(void) {
+  ESP_UpdateHeapMetrics();
+  ResponseAppend_P(PSTR(",\"MaxFree\":%d,\"Frag\":%d"),
+                        (uint32_t)ESP_getMaxAllocHeap()/1024,
+                        (int32_t)ESP_getHeapFragmentation());
+#if defined(UMM_INLINE_METRICS) || defined(UMM_STATS_FULL)
+  ResponseAppend_P(PSTR(",\"OomCount\":%d"), (uint32_t)umm_get_oom_count());
+#endif
+#ifdef UMM_STATS_FULL
+  ResponseAppend_P(PSTR(",\"HeapLwm\":%d,\"MaxAllocSz\":%d"),
+                        (uint32_t)umm_free_heap_size_lw_min()/1024,
+                        (uint32_t)umm_get_max_alloc_size());
+#endif  // UMM_STATS_FULL
+}
+
+void SerialHeapDump(void) {
+  // Status 44 - trigger umm heap dump to serial + OOM test
+  // ESP8266-only heap diagnostic. Chosen above the standard range
+  // (0-MAX_STATUS = 0-13) and below the reserved value 99 (full status dump).
+  umm_info(nullptr, true);
 #if defined(UMM_INLINE_METRICS) || defined(UMM_STATS_FULL)
   AddLog(LOG_LEVEL_INFO, PSTR("OOM: count %u (test-trigger)"), (uint32_t)umm_get_oom_count());
 #endif
 }
+
+#endif  // USE_ESP8266_DEBUG_HEAP
 
 uint32_t ESP_getFlashChipId(void) {
   return ESP.getFlashChipId();
