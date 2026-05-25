@@ -11,6 +11,8 @@
  * ESP8266 and ESP8285 Support
 \*********************************************************************************************/
 
+#include <umm_malloc/umm_malloc_cfg.h>
+
 const static char kWifiPhyMode[] PROGMEM = "low rate|11b|11g|11n"; // Wi-Fi Modes
 
 extern "C" {
@@ -104,8 +106,43 @@ float ESP_getFreeHeap1024(void) {
 }
 */
 
+// umm_max_block_size() requires a heap walk (ICACHE_FLASH_ATTR, IRQs disabled).
+// Cache the result; refresh once per second via ESP_UpdateHeapMetrics().
+// umm_max_block_size() and umm_free_heap_size_lw() are available unconditionally
+// (UMM_INFO and UMM_STATS are hardcoded active in umm_malloc_cfg.h).
+static uint32_t s_umm_max_free_block = 0;
+
+void ESP_UpdateHeapMetrics(void) {
+  s_umm_max_free_block = umm_max_block_size();
+}
+
 uint32_t ESP_getMaxAllocHeap(void) {
-  return ESP.getFreeHeap();
+  return s_umm_max_free_block ? s_umm_max_free_block : ESP.getFreeHeap();
+}
+
+int32_t ESP_getHeapFragmentation(void) {
+  // Same formula as ESP32: 100 - (largestFreeBlock * 100 / totalFree)
+  uint32_t free_heap = umm_free_heap_size_lw();  // ISR-safe, no heap walk
+  if (free_heap == 0 || s_umm_max_free_block == 0) { return 0; }
+  int32_t frag = 100 - (int32_t)(s_umm_max_free_block * 100 / free_heap);
+  return (frag < 0) ? 0 : frag;
+}
+
+void ESP_HeapOomCheck(void) {
+#if defined(UMM_INLINE_METRICS) || defined(UMM_STATS_FULL)
+  static size_t oom_prev = 0;
+  size_t oom = UMM_OOM_COUNT;
+  if (oom != oom_prev) {
+    AddLog(LOG_LEVEL_INFO, PSTR("OOM: count %u (+%u)"), oom, oom - oom_prev);
+    oom_prev = oom;
+  }
+#endif
+}
+
+void ESP_HeapOomTest(void) {
+#if defined(UMM_INLINE_METRICS) || defined(UMM_STATS_FULL)
+  AddLog(LOG_LEVEL_INFO, PSTR("OOM: count %u (test-trigger)"), (uint32_t)umm_get_oom_count());
+#endif
 }
 
 uint32_t ESP_getFlashChipId(void) {
